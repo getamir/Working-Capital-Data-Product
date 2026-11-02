@@ -1,0 +1,441 @@
+{
+  "$schema": "https://sap.github.io/csn-interop-specification/spec-v1/csn-interop-effective.schema.json",
+  "definitions": {
+    "cashflow": {
+      "kind": "context"
+    },
+    "sap.s4com:apiResource:CashFlow:v1.CashFlow": {
+      "__abapOriginalName": "I_CashLiquidityActualFlow",
+      "@AccessControl.authorizationCheck": {
+        "#": "MANDATORY"
+      },
+      "@Analytics.dataCategory": {
+        "#": "FACT"
+      },
+      "@Analytics.dataExtraction.delta.changeDataCapture.mapping": [
+        {
+          "table": "FQM_FLOW",
+          "role": {
+            "#": "MAIN"
+          },
+          "viewElement": [
+            "CashFlowID",
+            "CshFlwValdtyStrtDteTmeVal"
+          ],
+          "tableElement": [
+            "flow_id",
+            "valid_from"
+          ]
+        }
+      ],
+      "@Analytics.dataExtraction.enabled": true,
+      "@Analytics.internalName": {
+        "#": "LOCAL"
+      },
+      "@EndUserText.label": "Cash Liquidity Actual Flow for WCI",
+      "@ODM.oid": "CashFlowOID",
+      "@ObjectModel.modelingPattern": {
+        "#": "ANALYTICAL_FACT"
+      },
+      "@ObjectModel.sapObjectNodeType.name": "CashFlow",
+      "@ObjectModel.supportedCapabilities": [
+        {
+          "#": "CDS_MODELING_DATA_SOURCE"
+        },
+        {
+          "#": "EXTRACTION_DATA_SOURCE"
+        },
+        {
+          "#": "SQL_DATA_SOURCE"
+        }
+      ],
+      "@ObjectModel.usageType.dataClass": {
+        "#": "MIXED"
+      },
+      "@ObjectModel.usageType.serviceQuality": {
+        "#": "D"
+      },
+      "@ObjectModel.usageType.sizeCategory": {
+        "#": "XL"
+      },
+      "@VDM.viewType": {
+        "#": "COMPOSITE"
+      },
+      "kind": "entity",
+      "elements": {
+        "CashFlowID": {
+          "__abapOriginalName": "CashFlowID",
+          "@EndUserText.heading": "Flow ID",
+          "@EndUserText.label": "Flow ID",
+          "@EndUserText.quickInfo": "Flow ID",
+          "@ObjectModel.upperCase": true,
+          "key": true,
+          "type": "cds.String",
+          "length": 16
+        },
+        "CshFlwValdtyStrtDteTmeVal": {
+          "__abapOriginalName": "CshFlwValdtyStrtDteTmeVal",
+          "@EndUserText.heading": "FQM Flow Valid From",
+          "@EndUserText.label": "FQM Flow Valid From",
+          "@EndUserText.quickInfo": "FQM Flow Valid From - Decimal Type",
+          "@ObjectModel.upperCase": true,
+          "key": true,
+          "type": "cds.Decimal",
+          "precision": 21,
+          "scale": 7
+        },
+        "CompanyCode": {
+          "__abapOriginalName": "CompanyCode",
+          "@AbapCatalog.typeSpec.changeDocumentRelevant": true,
+          "@EndUserText.heading": "CoCd",
+          "@EndUserText.label": "Company Code",
+          "@EndUserText.quickInfo": "Company Code",
+          "@ObjectModel.foreignKey.association": "_CompanyCode",
+          "@ObjectModel.upperCase": true,
+          "type": "cds.String",
+          "length": 4
+        },
+        "TransactionDate": {
+          "__abapOriginalName": "TransactionDate",
+          "@EndUserText.heading": "Transaction Date",
+          "@EndUserText.label": "Transaction Date",
+          "@EndUserText.quickInfo": "Transaction Date",
+          "@ObjectModel.foreignKey.association": "_CalendarDate",
+          "@ObjectModel.upperCase": true,
+          "type": "cds.Date"
+        },
+        "PostingDate": {
+          "__abapOriginalName": "PostingDate",
+          "@AbapCatalog.typeSpec.changeDocumentRelevant": true,
+          "@EndUserText.heading": "Pstng Date",
+          "@EndUserText.label": "Posting Date",
+          "@EndUserText.quickInfo": "Posting Date in the Document",
+          "@ObjectModel.upperCase": true,
+          "type": "cds.Date"
+        },
+        "TransactionCurrency": {
+          "__abapOriginalName": "TransactionCurrency",
+          "@EndUserText.heading": "Currency",
+          "@EndUserText.label": "Currency",
+          "@EndUserText.quickInfo": "Currency",
+          "@ObjectModel.upperCase": true,
+          "@Semantics.currencyCode": true,
+          "type": "cds.String",
+          "length": 5
+        },
+        "AmountInTransactionCurrency": {
+          "__abapOriginalName": "AmountInTransactionCurrency",
+          "@Aggregation.default": {
+            "#": "SUM"
+          },
+          "@EndUserText.heading": "Amount",
+          "@EndUserText.label": "Amount",
+          "@EndUserText.quickInfo": "Amount",
+          "@ObjectModel.upperCase": true,
+          "@Semantics.amount.currencyCode": "TransactionCurrency",
+          "type": "cds.Decimal",
+          "precision": 34,
+          "scale": 4
+        },
+        "CompanyCodeCurrency": {
+          "__abapOriginalName": "CompanyCodeCurrency",
+          "@AbapCatalog.typeSpec.changeDocumentRelevant": true,
+          "@EndUserText.heading": "Crcy",
+          "@EndUserText.label": "Currency",
+          "@EndUserText.quickInfo": "Currency Key",
+          "@ObjectModel.foreignKey.association": "_CompanyCodeCurrency",
+          "@ObjectModel.upperCase": true,
+          "@Semantics.currencyCode": true,
+          "type": "cds.String",
+          "length": 5
+        },
+        "AmountInCompanyCodeCurrency": {
+          "__abapOriginalName": "AmountInCompanyCodeCurrency",
+          "@Aggregation.default": {
+            "#": "SUM"
+          },
+          "@EndUserText.heading": "Amount in Company Code Currency",
+          "@EndUserText.label": "Amount in Company Code Currency",
+          "@EndUserText.quickInfo": "Amount in Company Code Currency",
+          "@ObjectModel.upperCase": true,
+          "@Semantics.amount.currencyCode": "CompanyCodeCurrency",
+          "type": "cds.Decimal",
+          "precision": 34,
+          "scale": 4
+        },
+        "GlobalCurrency": {
+          "__abapOriginalName": "GlobalCurrency",
+          "@EndUserText.heading": "Global Currency",
+          "@EndUserText.label": "Global Currency",
+          "@EndUserText.quickInfo": "Global Currency",
+          "@ObjectModel.foreignKey.association": "_GlobalCurrency",
+          "@ObjectModel.upperCase": true,
+          "@Semantics.currencyCode": true,
+          "type": "cds.String",
+          "length": 5
+        },
+        "AmountInGlobalCurrency": {
+          "__abapOriginalName": "AmountInGlobalCurrency",
+          "@Aggregation.default": {
+            "#": "SUM"
+          },
+          "@EndUserText.heading": "Amount in Global Currency",
+          "@EndUserText.label": "Amount in Global Currency",
+          "@EndUserText.quickInfo": "Amount in Global Currency",
+          "@ObjectModel.upperCase": true,
+          "@Semantics.amount.currencyCode": "GlobalCurrency",
+          "type": "cds.Decimal",
+          "precision": 34,
+          "scale": 4
+        },
+        "BankAccountInternalID": {
+          "__abapOriginalName": "BankAccountInternalID",
+          "@AbapCatalog.typeSpec.changeDocumentRelevant": true,
+          "@EndUserText.heading": "Technical ID",
+          "@EndUserText.label": "Technical ID",
+          "@EndUserText.quickInfo": "Bank Account Technical ID",
+          "@ObjectModel.foreignKey.association": "_BankAccount",
+          "@ObjectModel.upperCase": true,
+          "type": "cds.String",
+          "length": 10
+        },
+        "Bank": {
+          "__abapOriginalName": "Bank",
+          "@AbapCatalog.typeSpec.changeDocumentRelevant": true,
+          "@EndUserText.heading": "Bank Key",
+          "@EndUserText.label": "Bank Key",
+          "@EndUserText.quickInfo": "Bank Key",
+          "@ObjectModel.foreignKey.association": "_Bank",
+          "@ObjectModel.upperCase": true,
+          "type": "cds.String",
+          "length": 15
+        },
+        "BankCountry": {
+          "__abapOriginalName": "BankCountry",
+          "@AbapCatalog.typeSpec.changeDocumentRelevant": true,
+          "@EndUserText.heading": "Bank Country/Region Key",
+          "@EndUserText.label": "Bank Ctry/Rgn. Key",
+          "@EndUserText.quickInfo": "Bank Country/Region Key",
+          "@ObjectModel.foreignKey.association": "_BankCountry",
+          "@ObjectModel.upperCase": true,
+          "type": "cds.String",
+          "length": 3
+        },
+        "BankName": {
+          "__abapOriginalName": "BankName",
+          "@AbapCatalog.typeSpec.changeDocumentRelevant": true,
+          "@EndUserText.heading": "Name of Financial Institution",
+          "@EndUserText.label": "Bank Name",
+          "@EndUserText.quickInfo": "Name of Financial Institution",
+          "type": "cds.String",
+          "length": 60
+        },
+        "CashFlowOID": {
+          "type": "cds.String",
+          "length": 128
+        }
+      }
+    },
+    "sap.s4com:apiResource:CashFlow:v1.CashFlowForecast": {
+      "__abapOriginalName": "I_CashLiquidityForecastFlow",
+      "@AccessControl.authorizationCheck": {
+        "#": "MANDATORY"
+      },
+      "@Analytics.dataCategory": {
+        "#": "FACT"
+      },
+      "@Analytics.dataExtraction.delta.changeDataCapture.mapping": [
+        {
+          "table": "FQM_FLOW",
+          "role": {
+            "#": "MAIN"
+          },
+          "viewElement": [
+            "CashFlowID",
+            "CshFlwValdtyStrtDteTmeVal"
+          ],
+          "tableElement": [
+            "flow_id",
+            "valid_from"
+          ]
+        }
+      ],
+      "@Analytics.dataExtraction.enabled": true,
+      "@Analytics.internalName": {
+        "#": "LOCAL"
+      },
+      "@EndUserText.label": "Cash Liquidity Forecast Flow for WCI",
+      "@ODM.oid": "CashFlowOID",
+      "@ObjectModel.modelingPattern": {
+        "#": "ANALYTICAL_FACT"
+      },
+      "@ObjectModel.sapObjectNodeType.name": "CashFlow",
+      "@ObjectModel.supportedCapabilities": [
+        {
+          "#": "CDS_MODELING_DATA_SOURCE"
+        },
+        {
+          "#": "EXTRACTION_DATA_SOURCE"
+        },
+        {
+          "#": "SQL_DATA_SOURCE"
+        }
+      ],
+      "@ObjectModel.usageType.dataClass": {
+        "#": "MIXED"
+      },
+      "@ObjectModel.usageType.serviceQuality": {
+        "#": "D"
+      },
+      "@ObjectModel.usageType.sizeCategory": {
+        "#": "XL"
+      },
+      "@VDM.viewType": {
+        "#": "COMPOSITE"
+      },
+      "kind": "entity",
+      "elements": {
+        "CashFlowID": {
+          "__abapOriginalName": "CashFlowID",
+          "@EndUserText.heading": "Flow ID",
+          "@EndUserText.label": "Flow ID",
+          "@EndUserText.quickInfo": "Flow ID",
+          "@ObjectModel.upperCase": true,
+          "key": true,
+          "type": "cds.String",
+          "length": 16
+        },
+        "CshFlwValdtyStrtDteTmeVal": {
+          "__abapOriginalName": "CshFlwValdtyStrtDteTmeVal",
+          "@EndUserText.heading": "FQM Flow Valid From",
+          "@EndUserText.label": "FQM Flow Valid From",
+          "@EndUserText.quickInfo": "FQM Flow Valid From - Decimal Type",
+          "@ObjectModel.upperCase": true,
+          "key": true,
+          "type": "cds.Decimal",
+          "precision": 21,
+          "scale": 7
+        },
+        "CompanyCode": {
+          "__abapOriginalName": "CompanyCode",
+          "@AbapCatalog.typeSpec.changeDocumentRelevant": true,
+          "@EndUserText.heading": "CoCd",
+          "@EndUserText.label": "Company Code",
+          "@EndUserText.quickInfo": "Company Code",
+          "@ObjectModel.foreignKey.association": "_CompanyCode",
+          "@ObjectModel.upperCase": true,
+          "type": "cds.String",
+          "length": 4
+        },
+        "TransactionDate": {
+          "__abapOriginalName": "TransactionDate",
+          "@EndUserText.heading": "Transaction Date",
+          "@EndUserText.label": "Transaction Date",
+          "@EndUserText.quickInfo": "Transaction Date",
+          "@ObjectModel.foreignKey.association": "_CalendarDate",
+          "@ObjectModel.upperCase": true,
+          "type": "cds.Date"
+        },
+        "PostingDate": {
+          "__abapOriginalName": "PostingDate",
+          "@AbapCatalog.typeSpec.changeDocumentRelevant": true,
+          "@EndUserText.heading": "Pstng Date",
+          "@EndUserText.label": "Posting Date",
+          "@EndUserText.quickInfo": "Posting Date in the Document",
+          "@ObjectModel.upperCase": true,
+          "type": "cds.Date"
+        },
+        "TransactionCurrency": {
+          "__abapOriginalName": "TransactionCurrency",
+          "@EndUserText.heading": "Currency",
+          "@EndUserText.label": "Currency",
+          "@EndUserText.quickInfo": "Currency",
+          "@ObjectModel.upperCase": true,
+          "@Semantics.currencyCode": true,
+          "type": "cds.String",
+          "length": 5
+        },
+        "AmountInTransactionCurrency": {
+          "__abapOriginalName": "AmountInTransactionCurrency",
+          "@Aggregation.default": {
+            "#": "SUM"
+          },
+          "@EndUserText.heading": "Amount",
+          "@EndUserText.label": "Amount",
+          "@EndUserText.quickInfo": "Amount",
+          "@ObjectModel.upperCase": true,
+          "@Semantics.amount.currencyCode": "TransactionCurrency",
+          "type": "cds.Decimal",
+          "precision": 34,
+          "scale": 4
+        },
+        "CompanyCodeCurrency": {
+          "__abapOriginalName": "CompanyCodeCurrency",
+          "@AbapCatalog.typeSpec.changeDocumentRelevant": true,
+          "@EndUserText.heading": "Crcy",
+          "@EndUserText.label": "Currency",
+          "@EndUserText.quickInfo": "Currency Key",
+          "@ObjectModel.foreignKey.association": "_CompanyCodeCurrency",
+          "@ObjectModel.upperCase": true,
+          "@Semantics.currencyCode": true,
+          "type": "cds.String",
+          "length": 5
+        },
+        "AmountInCompanyCodeCurrency": {
+          "__abapOriginalName": "AmountInCompanyCodeCurrency",
+          "@Aggregation.default": {
+            "#": "SUM"
+          },
+          "@EndUserText.heading": "Amount in Company Code Currency",
+          "@EndUserText.label": "Amount in Company Code Currency",
+          "@EndUserText.quickInfo": "Amount in Company Code Currency",
+          "@ObjectModel.upperCase": true,
+          "@Semantics.amount.currencyCode": "CompanyCodeCurrency",
+          "type": "cds.Decimal",
+          "precision": 34,
+          "scale": 4
+        },
+        "GlobalCurrency": {
+          "__abapOriginalName": "GlobalCurrency",
+          "@EndUserText.heading": "Global Currency",
+          "@EndUserText.label": "Global Currency",
+          "@EndUserText.quickInfo": "Global Currency",
+          "@ObjectModel.foreignKey.association": "_GlobalCurrency",
+          "@ObjectModel.upperCase": true,
+          "@Semantics.currencyCode": true,
+          "type": "cds.String",
+          "length": 5
+        },
+        "AmountInGlobalCurrency": {
+          "__abapOriginalName": "AmountInGlobalCurrency",
+          "@Aggregation.default": {
+            "#": "SUM"
+          },
+          "@EndUserText.heading": "Amount in Global Currency",
+          "@EndUserText.label": "Amount in Global Currency",
+          "@EndUserText.quickInfo": "Amount in Global Currency",
+          "@ObjectModel.upperCase": true,
+          "@Semantics.amount.currencyCode": "GlobalCurrency",
+          "type": "cds.Decimal",
+          "precision": 34,
+          "scale": 4
+        },
+        "BankAccountInternalID": {
+          "__abapOriginalName": "BankAccountInternalID",
+          "@AbapCatalog.typeSpec.changeDocumentRelevant": true,
+          "@EndUserText.heading": "Technical ID",
+          "@EndUserText.label": "Technical ID",
+          "@EndUserText.quickInfo": "Bank Account Technical ID",
+          "@ObjectModel.foreignKey.association": "_BankAccount",
+          "@ObjectModel.upperCase": true,
+          "type": "cds.String",
+          "length": 10
+        },
+        "CashFlowOID": {
+          "type": "cds.String",
+          "length": 128
+        }
+      }
+    }
+  }
+}

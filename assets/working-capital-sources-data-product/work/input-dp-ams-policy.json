@@ -1,0 +1,22 @@
+{
+  "policies": [
+    {
+      "dpId": "sap.s4com:dataProduct:CashFlow:v1",
+      "dcl": null,
+      "reason": "not_available",
+      "message": "No AMS policy resource definition found for sap.s4com:dataProduct:CashFlow:v1. Data product has output port(s) but none contain \"sap:ams-policy:v1\" type resource definitions. Not all data products have AMS policies."
+    },
+    {
+      "dpId": "sap.s4com:dataProduct:BillingDocument:v1",
+      "dcl": null,
+      "reason": "not_available",
+      "message": "No AMS policy resource definition found for sap.s4com:dataProduct:BillingDocument:v1. Data product has output port(s) but none contain \"sap:ams-policy:v1\" type resource definitions. Not all data products have AMS policies."
+    },
+    {
+      "dpId": "sap.s4com:dataProduct:FinancialTransaction:v1",
+      "dcl": null,
+      "reason": "not_available",
+      "message": "No AMS policy resource definition found for sap.s4com:dataProduct:FinancialTransaction:v1. Data product has output port(s) but none contain \"sap:ams-policy:v1\" type resource definitions. Not all data products have AMS policies."
+    }
+  ]
+}

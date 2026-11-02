@@ -1,0 +1,21 @@
+{
+  "derived_dp_name": "WorkingCapitalSources",
+  "source_dp_fqdns": [
+    "sap.s4com:dataProduct:CashFlow:v1.1.1",
+    "sap.s4com:dataProduct:BillingDocument:v1.6.0",
+    "sap.s4com:dataProduct:FinancialTransaction:v1.9.9"
+  ],
+  "applicationNamespace": "c.bdc.8ddfzh0uzy38vt1gmuyov23tk",
+  "created_at": "2026-10-22T14:44:16Z",
+  "metadata_approved": true,
+  "header": {
+    "name": "WorkingCapitalSources",
+    "title": "Working Capital Sources",
+    "description": "This data product consolidates three key working capital dimensions from SAP ECC: cash position and forecast data (via CashFlow), accounts receivable balances from customer billing (via BillingDocument), and treasury financial commitments (via FinancialTransaction). It provides finance and treasury teams with a governed, reusable view for liquidity monitoring, AR aging analysis, and treasury exposure reporting.",
+    "type": "derived",
+    "shortDescription": "Unified working capital data combining ECC cash flows, accounts receivable from billing documents, and financial transactions for analytics and downstream consumption.",
+    "version": "1.0.0",
+    "applicationNamespace": "c.bdc.8ddfzh0uzy38vt1gmuyov23tk",
+    "responsible": "customer:vendor:Customer"
+  }
+}

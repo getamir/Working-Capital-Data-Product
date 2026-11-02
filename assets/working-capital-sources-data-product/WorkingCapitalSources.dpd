@@ -1,0 +1,747 @@
+{
+  "definition": {
+    "header": {
+      "namespace": "c.bdc.8ddfzh0uzy38vt1gmuyov23tk",
+      "version": "1.0.0",
+      "type": "derived",
+      "category": "other",
+      "name": "WorkingCapitalSources",
+      "title": "Working Capital Sources",
+      "shortDescription": "Unified working capital data combining ECC cash flows, accounts receivable from billing documents, and financial transactions for analytics and downstream consumption.",
+      "description": "This data product consolidates three key working capital dimensions from SAP ECC: cash position and forecast data (via CashFlow), accounts receivable balances from customer billing (via BillingDocument), and treasury financial commitments (via FinancialTransaction). It provides finance and treasury teams with a governed, reusable view for liquidity monitoring, AR aging analysis, and treasury exposure reporting.",
+      "responsible": "customer:vendor:Customer",
+      "partOfPackage": "c.bdc.8ddfzh0uzy38vt1gmuyov23tk:package:dataProducts:v1"
+    },
+    "dpdInterop": "1.0",
+    "meta": {
+      "creator": "DPCA"
+    },
+    "inputPorts": [
+      {
+        "apiResources": [
+          {
+            "ordId": "sap.s4com:apiResource:CashFlow:v1",
+            "minVersion": "1.1.1"
+          }
+        ]
+      },
+      {
+        "apiResources": [
+          {
+            "ordId": "sap.s4com:apiResource:BillingDocument:v1",
+            "minVersion": "1.6.0"
+          }
+        ]
+      },
+      {
+        "apiResources": [
+          {
+            "ordId": "sap.s4com:apiResource:FinancialTransaction:v1",
+            "minVersion": "1.9.9"
+          }
+        ]
+      }
+    ],
+    "outputPorts": [
+      {
+        "name": "WorkingCapitalSources",
+        "protocol": "delta-sharing"
+      }
+    ],
+    "target": {
+      "definition": {
+        "$schema": "https://sap.github.io/csn-interop-specification/spec-v1/csn-interop-effective.schema.json",
+        "csnInteropEffective": "1.0",
+        "$version": "2.0",
+        "meta": {
+          "__name": "WorkingCapitalSources",
+          "__namespace": "c.bdc.8ddfzh0uzy38vt1gmuyov23tk",
+          "document": {
+            "version": "1.0.0"
+          }
+        },
+        "definitions": {
+          "WorkingCapitalSourcesCube": {
+            "kind": "entity",
+            "@EndUserText.label": "Working Capital Cash Flow Sources Cube",
+            "@ObjectModel.tenantWideUniqueName": "WorkingCapitalSourcesCube",
+            "elements": {
+              "CompanyCode": {
+                "@Analytics.dimension": true,
+                "@AbapCatalog.typeSpec.changeDocumentRelevant": true,
+                "@EndUserText.heading": "CoCd",
+                "@EndUserText.label": "Company Code",
+                "@EndUserText.quickInfo": "Company Code",
+                "@ObjectModel.foreignKey.association": "_CompanyCode",
+                "@ObjectModel.upperCase": true,
+                "key": true,
+                "type": "cds.String",
+                "length": 4
+              },
+              "PostingDate": {
+                "@Analytics.dimension": true,
+                "@AbapCatalog.typeSpec.changeDocumentRelevant": true,
+                "@EndUserText.heading": "Pstng Date",
+                "@EndUserText.label": "Posting Date",
+                "@EndUserText.quickInfo": "Posting Date in the Document",
+                "@ObjectModel.upperCase": true,
+                "type": "cds.Date"
+              },
+              "TransactionDate": {
+                "@Analytics.dimension": true,
+                "@EndUserText.heading": "Transaction Date",
+                "@EndUserText.label": "Transaction Date",
+                "@EndUserText.quickInfo": "Transaction Date",
+                "@ObjectModel.foreignKey.association": "_CalendarDate",
+                "@ObjectModel.upperCase": true,
+                "type": "cds.Date"
+              },
+              "TransactionCurrency": {
+                "@Analytics.dimension": true,
+                "@EndUserText.heading": "Currency",
+                "@EndUserText.label": "Currency",
+                "@EndUserText.quickInfo": "Currency",
+                "@ObjectModel.upperCase": true,
+                "@Semantics.currencyCode": true,
+                "type": "cds.String",
+                "length": 5
+              },
+              "CompanyCodeCurrency": {
+                "@Analytics.dimension": true,
+                "@AbapCatalog.typeSpec.changeDocumentRelevant": true,
+                "@EndUserText.heading": "Crcy",
+                "@EndUserText.label": "Currency",
+                "@EndUserText.quickInfo": "Currency Key",
+                "@ObjectModel.foreignKey.association": "_CompanyCodeCurrency",
+                "@ObjectModel.upperCase": true,
+                "@Semantics.currencyCode": true,
+                "type": "cds.String",
+                "length": 5
+              },
+              "GlobalCurrency": {
+                "@Analytics.dimension": true,
+                "@EndUserText.heading": "Global Currency",
+                "@EndUserText.label": "Global Currency",
+                "@EndUserText.quickInfo": "Global Currency",
+                "@ObjectModel.foreignKey.association": "_GlobalCurrency",
+                "@ObjectModel.upperCase": true,
+                "@Semantics.currencyCode": true,
+                "type": "cds.String",
+                "length": 5
+              },
+              "BankAccountInternalID": {
+                "@Analytics.dimension": true,
+                "@AbapCatalog.typeSpec.changeDocumentRelevant": true,
+                "@EndUserText.heading": "Technical ID",
+                "@EndUserText.label": "Technical ID",
+                "@EndUserText.quickInfo": "Bank Account Technical ID",
+                "@ObjectModel.foreignKey.association": "_BankAccount",
+                "@ObjectModel.upperCase": true,
+                "type": "cds.String",
+                "length": 10
+              },
+              "AmountInTransactionCurrency": {
+                "@Core.Computed": true,
+                "type": "cds.Decimal",
+                "precision": 34,
+                "scale": 4
+              },
+              "AmountInTransactionCurrencyCount": {
+                "@Core.Computed": true,
+                "type": "cds.Integer"
+              },
+              "AmountInCompanyCodeCurrency": {
+                "@Core.Computed": true,
+                "type": "cds.Decimal",
+                "precision": 34,
+                "scale": 4
+              },
+              "AmountInCompanyCodeCurrencyCount": {
+                "@Core.Computed": true,
+                "type": "cds.Integer"
+              },
+              "AmountInGlobalCurrency": {
+                "@Core.Computed": true,
+                "type": "cds.Decimal",
+                "precision": 34,
+                "scale": 4
+              },
+              "AmountInGlobalCurrencyCount": {
+                "@Core.Computed": true,
+                "type": "cds.Integer"
+              },
+              "recordCount": {
+                "@Core.Computed": true,
+                "type": "cds.Integer"
+              }
+            }
+          }
+        }
+      },
+      "authorization": {
+        "definition": "POLICY \"WorkingCapitalSources.v1.WorkingCapitalSourcesCube\" {\n  GRANT READ ON \"c.bdc.8ddfzh0uzy38vt1gmuyov23tk.WorkingCapitalSources.v1.WorkingCapitalSourcesCube\" WHERE\n    c.bdc.8ddfzh0uzy38vt1gmuyov23tk.WorkingCapitalSources.v1.WorkingCapitalSourcesCube.CompanyCode IS NOT RESTRICTED AND\n    c.bdc.8ddfzh0uzy38vt1gmuyov23tk.WorkingCapitalSources.v1.WorkingCapitalSourcesCube.PostingDate IS NOT RESTRICTED AND\n    c.bdc.8ddfzh0uzy38vt1gmuyov23tk.WorkingCapitalSources.v1.WorkingCapitalSourcesCube.TransactionDate IS NOT RESTRICTED AND\n    c.bdc.8ddfzh0uzy38vt1gmuyov23tk.WorkingCapitalSources.v1.WorkingCapitalSourcesCube.TransactionCurrency IS NOT RESTRICTED AND\n    c.bdc.8ddfzh0uzy38vt1gmuyov23tk.WorkingCapitalSources.v1.WorkingCapitalSourcesCube.CompanyCodeCurrency IS NOT RESTRICTED AND\n    c.bdc.8ddfzh0uzy38vt1gmuyov23tk.WorkingCapitalSources.v1.WorkingCapitalSourcesCube.GlobalCurrency IS NOT RESTRICTED AND\n    c.bdc.8ddfzh0uzy38vt1gmuyov23tk.WorkingCapitalSources.v1.WorkingCapitalSourcesCube.BankAccountInternalID IS NOT RESTRICTED;\n}"
+      }
+    },
+    "transformation": {
+      "transformers": {
+        "WorkingCapitalSourcesCubeTransformation": {
+          "title": "Transformation for WorkingCapitalSourcesCube",
+          "type": "sql-query",
+          "inputs": [
+            {
+              "name": "sap.s4com:apiResource:CashFlow:v1.CashFlow"
+            }
+          ],
+          "outputs": [
+            {
+              "name": "WorkingCapitalSourcesCube"
+            }
+          ],
+          "definition": {
+            "query": {
+              "SELECT": {
+                "from": {
+                  "ref": [
+                    "sap.s4com:apiResource:CashFlow:v1.CashFlow"
+                  ],
+                  "as": "CF"
+                },
+                "columns": [
+                  {
+                    "key": true,
+                    "ref": [
+                      "CF",
+                      "CompanyCode"
+                    ],
+                    "as": "CompanyCode"
+                  },
+                  {
+                    "ref": [
+                      "CF",
+                      "PostingDate"
+                    ],
+                    "as": "PostingDate"
+                  },
+                  {
+                    "ref": [
+                      "CF",
+                      "TransactionDate"
+                    ],
+                    "as": "TransactionDate"
+                  },
+                  {
+                    "ref": [
+                      "CF",
+                      "TransactionCurrency"
+                    ],
+                    "as": "TransactionCurrency"
+                  },
+                  {
+                    "ref": [
+                      "CF",
+                      "CompanyCodeCurrency"
+                    ],
+                    "as": "CompanyCodeCurrency"
+                  },
+                  {
+                    "ref": [
+                      "CF",
+                      "GlobalCurrency"
+                    ],
+                    "as": "GlobalCurrency"
+                  },
+                  {
+                    "ref": [
+                      "CF",
+                      "BankAccountInternalID"
+                    ],
+                    "as": "BankAccountInternalID"
+                  },
+                  {
+                    "xpr": [
+                      {
+                        "func": "SUM",
+                        "args": [
+                          {
+                            "ref": [
+                              "CF",
+                              "AmountInTransactionCurrency"
+                            ]
+                          }
+                        ],
+                        "cast": {
+                          "type": "cds.Decimal",
+                          "precision": 34,
+                          "scale": 4
+                        }
+                      }
+                    ],
+                    "as": "AmountInTransactionCurrency"
+                  },
+                  {
+                    "xpr": [
+                      {
+                        "func": "SUM",
+                        "args": [
+                          {
+                            "xpr": [
+                              "case",
+                              "when",
+                              {
+                                "ref": [
+                                  "CF",
+                                  "AmountInTransactionCurrency"
+                                ]
+                              },
+                              "is",
+                              "not",
+                              "null",
+                              "then",
+                              {
+                                "val": 1
+                              },
+                              "else",
+                              {
+                                "val": 0
+                              },
+                              "end"
+                            ]
+                          }
+                        ],
+                        "cast": {
+                          "type": "cds.Integer"
+                        }
+                      }
+                    ],
+                    "as": "AmountInTransactionCurrencyCount"
+                  },
+                  {
+                    "xpr": [
+                      {
+                        "func": "SUM",
+                        "args": [
+                          {
+                            "ref": [
+                              "CF",
+                              "AmountInCompanyCodeCurrency"
+                            ]
+                          }
+                        ],
+                        "cast": {
+                          "type": "cds.Decimal",
+                          "precision": 34,
+                          "scale": 4
+                        }
+                      }
+                    ],
+                    "as": "AmountInCompanyCodeCurrency"
+                  },
+                  {
+                    "xpr": [
+                      {
+                        "func": "SUM",
+                        "args": [
+                          {
+                            "xpr": [
+                              "case",
+                              "when",
+                              {
+                                "ref": [
+                                  "CF",
+                                  "AmountInCompanyCodeCurrency"
+                                ]
+                              },
+                              "is",
+                              "not",
+                              "null",
+                              "then",
+                              {
+                                "val": 1
+                              },
+                              "else",
+                              {
+                                "val": 0
+                              },
+                              "end"
+                            ]
+                          }
+                        ],
+                        "cast": {
+                          "type": "cds.Integer"
+                        }
+                      }
+                    ],
+                    "as": "AmountInCompanyCodeCurrencyCount"
+                  },
+                  {
+                    "xpr": [
+                      {
+                        "func": "SUM",
+                        "args": [
+                          {
+                            "ref": [
+                              "CF",
+                              "AmountInGlobalCurrency"
+                            ]
+                          }
+                        ],
+                        "cast": {
+                          "type": "cds.Decimal",
+                          "precision": 34,
+                          "scale": 4
+                        }
+                      }
+                    ],
+                    "as": "AmountInGlobalCurrency"
+                  },
+                  {
+                    "xpr": [
+                      {
+                        "func": "SUM",
+                        "args": [
+                          {
+                            "xpr": [
+                              "case",
+                              "when",
+                              {
+                                "ref": [
+                                  "CF",
+                                  "AmountInGlobalCurrency"
+                                ]
+                              },
+                              "is",
+                              "not",
+                              "null",
+                              "then",
+                              {
+                                "val": 1
+                              },
+                              "else",
+                              {
+                                "val": 0
+                              },
+                              "end"
+                            ]
+                          }
+                        ],
+                        "cast": {
+                          "type": "cds.Integer"
+                        }
+                      }
+                    ],
+                    "as": "AmountInGlobalCurrencyCount"
+                  },
+                  {
+                    "xpr": [
+                      {
+                        "func": "COUNT",
+                        "args": [
+                          "*"
+                        ],
+                        "cast": {
+                          "type": "cds.Integer"
+                        }
+                      }
+                    ],
+                    "as": "recordCount"
+                  }
+                ],
+                "groupBy": [
+                  {
+                    "ref": [
+                      "CF",
+                      "CompanyCode"
+                    ]
+                  },
+                  {
+                    "ref": [
+                      "CF",
+                      "PostingDate"
+                    ]
+                  },
+                  {
+                    "ref": [
+                      "CF",
+                      "TransactionDate"
+                    ]
+                  },
+                  {
+                    "ref": [
+                      "CF",
+                      "TransactionCurrency"
+                    ]
+                  },
+                  {
+                    "ref": [
+                      "CF",
+                      "CompanyCodeCurrency"
+                    ]
+                  },
+                  {
+                    "ref": [
+                      "CF",
+                      "GlobalCurrency"
+                    ]
+                  },
+                  {
+                    "ref": [
+                      "CF",
+                      "BankAccountInternalID"
+                    ]
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "__source": {
+      "dataSources": [
+        {
+          "name": "sap.s4com:apiResource:CashFlow:v1",
+          "systemTypes": [
+            "sap.s4com"
+          ],
+          "dataSourceType": "delta-sharing",
+          "definition": {
+            "definitions": {
+              "CashFlow": {
+                "__abapOriginalName": "I_CashLiquidityActualFlow",
+                "@AccessControl.authorizationCheck": {
+                  "#": "MANDATORY"
+                },
+                "@Analytics.dataCategory": {
+                  "#": "FACT"
+                },
+                "@Analytics.dataExtraction.delta.changeDataCapture.mapping": [
+                  {
+                    "table": "FQM_FLOW",
+                    "role": {
+                      "#": "MAIN"
+                    },
+                    "viewElement": [
+                      "CashFlowID",
+                      "CshFlwValdtyStrtDteTmeVal"
+                    ],
+                    "tableElement": [
+                      "flow_id",
+                      "valid_from"
+                    ]
+                  }
+                ],
+                "@Analytics.dataExtraction.enabled": true,
+                "@Analytics.internalName": {
+                  "#": "LOCAL"
+                },
+                "@EndUserText.label": "CashFlow",
+                "@ODM.oid": "CashFlowOID",
+                "@ObjectModel.modelingPattern": {
+                  "#": "ANALYTICAL_FACT"
+                },
+                "@ObjectModel.sapObjectNodeType.name": "CashFlow",
+                "@ObjectModel.supportedCapabilities": [
+                  {
+                    "#": "CDS_MODELING_DATA_SOURCE"
+                  },
+                  {
+                    "#": "EXTRACTION_DATA_SOURCE"
+                  },
+                  {
+                    "#": "SQL_DATA_SOURCE"
+                  }
+                ],
+                "@ObjectModel.usageType.dataClass": {
+                  "#": "MIXED"
+                },
+                "@ObjectModel.usageType.serviceQuality": {
+                  "#": "D"
+                },
+                "@ObjectModel.usageType.sizeCategory": {
+                  "#": "XL"
+                },
+                "@VDM.viewType": {
+                  "#": "COMPOSITE"
+                },
+                "kind": "entity",
+                "elements": {
+                  "CashFlowID": {
+                    "__abapOriginalName": "CashFlowID",
+                    "@EndUserText.heading": "Flow ID",
+                    "@EndUserText.label": "CashFlowID",
+                    "@EndUserText.quickInfo": "Flow ID",
+                    "@ObjectModel.upperCase": true,
+                    "key": true,
+                    "type": "cds.String",
+                    "length": 16
+                  },
+                  "CshFlwValdtyStrtDteTmeVal": {
+                    "__abapOriginalName": "CshFlwValdtyStrtDteTmeVal",
+                    "@EndUserText.heading": "FQM Flow Valid From",
+                    "@EndUserText.label": "CshFlwValdtyStrtDteTmeVal",
+                    "@EndUserText.quickInfo": "FQM Flow Valid From - Decimal Type",
+                    "@ObjectModel.upperCase": true,
+                    "key": true,
+                    "type": "cds.Decimal",
+                    "precision": 21,
+                    "scale": 7
+                  },
+                  "CompanyCode": {
+                    "__abapOriginalName": "CompanyCode",
+                    "@AbapCatalog.typeSpec.changeDocumentRelevant": true,
+                    "@EndUserText.heading": "CoCd",
+                    "@EndUserText.label": "CompanyCode",
+                    "@EndUserText.quickInfo": "Company Code",
+                    "@ObjectModel.foreignKey.association": "_CompanyCode",
+                    "@ObjectModel.upperCase": true,
+                    "type": "cds.String",
+                    "length": 4
+                  },
+                  "TransactionDate": {
+                    "__abapOriginalName": "TransactionDate",
+                    "@EndUserText.heading": "Transaction Date",
+                    "@EndUserText.label": "TransactionDate",
+                    "@EndUserText.quickInfo": "Transaction Date",
+                    "@ObjectModel.foreignKey.association": "_CalendarDate",
+                    "@ObjectModel.upperCase": true,
+                    "type": "cds.Date"
+                  },
+                  "PostingDate": {
+                    "__abapOriginalName": "PostingDate",
+                    "@AbapCatalog.typeSpec.changeDocumentRelevant": true,
+                    "@EndUserText.heading": "Pstng Date",
+                    "@EndUserText.label": "PostingDate",
+                    "@EndUserText.quickInfo": "Posting Date in the Document",
+                    "@ObjectModel.upperCase": true,
+                    "type": "cds.Date"
+                  },
+                  "TransactionCurrency": {
+                    "__abapOriginalName": "TransactionCurrency",
+                    "@EndUserText.heading": "Currency",
+                    "@EndUserText.label": "TransactionCurrency",
+                    "@EndUserText.quickInfo": "Currency",
+                    "@ObjectModel.upperCase": true,
+                    "@Semantics.currencyCode": true,
+                    "type": "cds.String",
+                    "length": 5
+                  },
+                  "AmountInTransactionCurrency": {
+                    "__abapOriginalName": "AmountInTransactionCurrency",
+                    "@Aggregation.default": {
+                      "#": "SUM"
+                    },
+                    "@EndUserText.heading": "Amount",
+                    "@EndUserText.label": "AmountInTransactionCurrency",
+                    "@EndUserText.quickInfo": "Amount",
+                    "@ObjectModel.upperCase": true,
+                    "@Semantics.amount.currencyCode": "TransactionCurrency",
+                    "type": "cds.Decimal",
+                    "precision": 34,
+                    "scale": 4
+                  },
+                  "CompanyCodeCurrency": {
+                    "__abapOriginalName": "CompanyCodeCurrency",
+                    "@AbapCatalog.typeSpec.changeDocumentRelevant": true,
+                    "@EndUserText.heading": "Crcy",
+                    "@EndUserText.label": "CompanyCodeCurrency",
+                    "@EndUserText.quickInfo": "Currency Key",
+                    "@ObjectModel.foreignKey.association": "_CompanyCodeCurrency",
+                    "@ObjectModel.upperCase": true,
+                    "@Semantics.currencyCode": true,
+                    "type": "cds.String",
+                    "length": 5
+                  },
+                  "AmountInCompanyCodeCurrency": {
+                    "__abapOriginalName": "AmountInCompanyCodeCurrency",
+                    "@Aggregation.default": {
+                      "#": "SUM"
+                    },
+                    "@EndUserText.heading": "Amount in Company Code Currency",
+                    "@EndUserText.label": "AmountInCompanyCodeCurrency",
+                    "@EndUserText.quickInfo": "Amount in Company Code Currency",
+                    "@ObjectModel.upperCase": true,
+                    "@Semantics.amount.currencyCode": "CompanyCodeCurrency",
+                    "type": "cds.Decimal",
+                    "precision": 34,
+                    "scale": 4
+                  },
+                  "GlobalCurrency": {
+                    "__abapOriginalName": "GlobalCurrency",
+                    "@EndUserText.heading": "Global Currency",
+                    "@EndUserText.label": "GlobalCurrency",
+                    "@EndUserText.quickInfo": "Global Currency",
+                    "@ObjectModel.foreignKey.association": "_GlobalCurrency",
+                    "@ObjectModel.upperCase": true,
+                    "@Semantics.currencyCode": true,
+                    "type": "cds.String",
+                    "length": 5
+                  },
+                  "AmountInGlobalCurrency": {
+                    "__abapOriginalName": "AmountInGlobalCurrency",
+                    "@Aggregation.default": {
+                      "#": "SUM"
+                    },
+                    "@EndUserText.heading": "Amount in Global Currency",
+                    "@EndUserText.label": "AmountInGlobalCurrency",
+                    "@EndUserText.quickInfo": "Amount in Global Currency",
+                    "@ObjectModel.upperCase": true,
+                    "@Semantics.amount.currencyCode": "GlobalCurrency",
+                    "type": "cds.Decimal",
+                    "precision": 34,
+                    "scale": 4
+                  },
+                  "BankAccountInternalID": {
+                    "__abapOriginalName": "BankAccountInternalID",
+                    "@AbapCatalog.typeSpec.changeDocumentRelevant": true,
+                    "@EndUserText.heading": "Technical ID",
+                    "@EndUserText.label": "BankAccountInternalID",
+                    "@EndUserText.quickInfo": "Bank Account Technical ID",
+                    "@ObjectModel.foreignKey.association": "_BankAccount",
+                    "@ObjectModel.upperCase": true,
+                    "type": "cds.String",
+                    "length": 10
+                  },
+                  "Bank": {
+                    "__abapOriginalName": "Bank",
+                    "@AbapCatalog.typeSpec.changeDocumentRelevant": true,
+                    "@EndUserText.heading": "Bank Key",
+                    "@EndUserText.label": "Bank",
+                    "@EndUserText.quickInfo": "Bank Key",
+                    "@ObjectModel.foreignKey.association": "_Bank",
+                    "@ObjectModel.upperCase": true,
+                    "type": "cds.String",
+                    "length": 15
+                  },
+                  "BankCountry": {
+                    "__abapOriginalName": "BankCountry",
+                    "@AbapCatalog.typeSpec.changeDocumentRelevant": true,
+                    "@EndUserText.heading": "Bank Country/Region Key",
+                    "@EndUserText.label": "BankCountry",
+                    "@EndUserText.quickInfo": "Bank Country/Region Key",
+                    "@ObjectModel.foreignKey.association": "_BankCountry",
+                    "@ObjectModel.upperCase": true,
+                    "type": "cds.String",
+                    "length": 3
+                  },
+                  "BankName": {
+                    "__abapOriginalName": "BankName",
+                    "@AbapCatalog.typeSpec.changeDocumentRelevant": true,
+                    "@EndUserText.heading": "Name of Financial Institution",
+                    "@EndUserText.label": "BankName",
+                    "@EndUserText.quickInfo": "Name of Financial Institution",
+                    "type": "cds.String",
+                    "length": 60
+                  },
+                  "CashFlowOID": {
+                    "type": "cds.String",
+                    "length": 128
+                  }
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,25 @@
+apiVersion: asset.sap/v1
+kind: Asset
+
+metadata:
+  name: working-capital-sources-data-product
+  version: 1.0.0
+
+type: data-product
+
+sourceRoot: "."
+
+provides:
+  data:
+    name: working-capital-sources-data-product
+    kind: data-product
+    ordId: c.bdc.8ddfzh0uzy38vt1gmuyov23tk:dataProduct:WorkingCapitalSources:v1
+    format: interop
+
+requires:
+  - name: cash-flow
+    kind: apiResource
+    ordId: sap.s4com:apiResource:CashFlow:v1
+
+production:
+  definitionFile: WorkingCapitalSources.dpd

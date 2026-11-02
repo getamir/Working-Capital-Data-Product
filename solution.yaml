@@ -1,0 +1,10 @@
+apiVersion: solution.sap/v1
+kind: Solution
+
+metadata:
+  name: working-capital-sources-80e38
+  version: 1.0.0
+  description: Governed, reusable data product exposing working capital sources from SAP ECC — combining cash flows for analytics and downstream consumption.
+
+assets:
+  - ref: ./assets/working-capital-sources-data-product/asset.yaml
